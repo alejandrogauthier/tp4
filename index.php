@@ -1,18 +1,33 @@
 <?php 
+    session_start();
+    require('./clases/usuario.php');
     $usuario = '';
+    $nombre_usuario = '';
     $clave = '';
-    $errors = [];
+    $error = '';
     if($_POST)
     {
-        $usuario = $_POST['usuario'];
+        $nombre_usuario = $_POST['usuario'];
         $clave = $_POST['clave'];
-        if($usuario == '' || $clave == '')
+        if($nombre_usuario == '' || $clave == '')
         {
-            $errors[] = 'Usuario o clave vacia';        
-        }
-        if()
-        {
-            
+            $error= 'Usuario o clave vacia';        
+        }else {
+            $usuario = Usuario::buscarUsuario($nombre_usuario);
+            if($usuario !== false)
+            {
+                if(password_verify($clave,$usuario["clave"])){
+                    $_SESSION["usuario"] = $usuario;
+                    header("Location:sistema.php");
+                } else 
+                {
+                    $error = 'Contraseña incorrecta';    
+                }
+             
+            } else 
+            {
+                $error = 'Usuario incorrecto';    
+            }
         }
     }
 ?>
@@ -36,7 +51,7 @@
             <div class="row mb-3">
                 <label for="usuario" class="form-label col-sm-3">Usuario</label>
                 <div class="col-sm-9">
-                    <input type="text" name="usuario" class="form-control" id="usuario" value="<?= $usuario?>">
+                    <input type="text" name="usuario" class="form-control" id="usuario" value="<?= $nombre_usuario?>">
                 </div>
                
             </div>
@@ -47,17 +62,14 @@
                     <button class="btn btn-success w-100">
                         LOGEARSE
                     </button>
-                </div>
+                    <?php if($error != '') : ?>
+                        <div class="alert alert-danger mt-4">                       
+                               <?= $error ?>      
+                        </div>
+                </div>              
+                    <?php endif; ?> 
             </div> 
-            <?php if(count($errors)) : ?>
-                <div class="alert alert-danger">
-                    <?php foreach($errors as $error)
-                    {
-                        echo $error;
-                    }
-                    ?>
-                </div>
-            <?php endif; ?>         
+                   
         </form>
     </div>
 

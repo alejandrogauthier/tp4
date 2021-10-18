@@ -6,7 +6,6 @@
         protected $modelo;
         protected $precio_costo;
         protected $precio_venta;
-        protected $comision;
         protected $usuario_id;
 
         public function setId($id)
@@ -49,15 +48,7 @@
         {
             return $this->precio_venta;
         }
-        public function setComision($comision)
-        {
-            $this->comision = $comision;
-        }
-        public function getComision()
-        {
-            return $this->comision;
-        }
-
+        
         public function setUsuarioId($usuario_id)
         {
             $this->usuario_id = $usuario_id;
