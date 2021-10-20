@@ -1,4 +1,5 @@
 <?php 
+    //clase para la conexion a la bd
     class Conector
     {
         protected $conn;

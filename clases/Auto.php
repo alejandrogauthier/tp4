@@ -4,10 +4,15 @@
         protected $id;
         protected $marca;
         protected $modelo;
-        protected $precio_costo;
-        protected $precio_venta;
-        protected $usuario_id;
-
+        protected $precio;
+    
+        public function __construct($id,$marca,$modelo,$precio)
+        {
+            $this->setId($id);
+            $this->setMarca($marca);
+            $this->setModelo($modelo);
+            $this->setPrecio($precio);
+        }
         public function setId($id)
         {
             $this->id = $id;
@@ -32,32 +37,15 @@
         {
             return $this->modelo;
         }
-        public function setPrecioCosto($precio_costo)
-        {
-            $this->precio_costo = $precio_costo;
-        }
-        public function getPrecioCosto()
-        {
-            return $this->precio_costo;
-        }
-        public function setPrecioVenta($precio_venta)
-        {
-            $this->precio_venta = $precio_venta;
-        }
-        public function getPrecioVenta()
-        {
-            return $this->precio_venta;
-        }
         
-        public function setUsuarioId($usuario_id)
+        public function setPrecio($precio)
         {
-            $this->usuario_id = $usuario_id;
+            $this->precio = $precio;
         }
-        public function getUsuarioId()
+        public function getPrecio()
         {
-            return $this->usuario_id;
+            return $this->precio;
         }
-
     }
 
 ?>

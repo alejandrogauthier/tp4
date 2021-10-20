@@ -1,6 +1,6 @@
 <?php 
+    include_once('./repositorios/UsuarioRepository.php');
     session_start();
-    require('./clases/usuario.php');
     $usuario = '';
     $nombre_usuario = '';
     $clave = '';
@@ -13,7 +13,7 @@
         {
             $error= 'Usuario o clave vacia';        
         }else {
-            $usuario = Usuario::buscarUsuario($nombre_usuario);
+            $usuario = UsuarioRepository::buscarUsuario($nombre_usuario);
             if($usuario !== false)
             {
                 if(password_verify($clave,$usuario["clave"])){
@@ -66,8 +66,9 @@
                         <div class="alert alert-danger mt-4">                       
                                <?= $error ?>      
                         </div>
-                </div>              
                     <?php endif; ?> 
+                </div>              
+                    
             </div> 
                    
         </form>
