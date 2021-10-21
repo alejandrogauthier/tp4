@@ -21,31 +21,36 @@ $maxVenta = VentaRepository::max();
 $error = '';
 
 $usuario = new Usuario($usuario['id'], $usuario['usuario'], $usuario['clave'], $usuario['nombre'], $usuario['apellido'], $usuario['superadmin']);
-if ($_SERVER["REQUEST_METHOD"] == 'POST') {
-    $datos = json_decode(file_get_contents("php://input"));
+if ($_SERVER["REQUEST_METHOD"] == 'POST' || $_POST) {
+   
+    $datos = json_decode(file_get_contents("php://input"),true);
+    if($datos == null)
+    {
+        $datos = $_POST;
+    }
 
     //switch para validar el tipo de evento
-    switch($datos->evento)
+    switch($datos['evento'])
     {
        case 'crear' :  
-                    if ($datos->usuario_id != '' && $datos->auto_id != '' && $datos->fecha != '') {
-                        VentaRepository::create($datos);
-                        
+                    if ($datos['usuario_id'] != '' && $datos['auto_id'] != '' && $datos['fecha'] != '') {
+                        VentaRepository::create($datos);   
+                        header("Location:sistema.php");                                    
                     } else {
                         $error = "Campo vacio";
                     }
                 break;
         case 'editar': 
-                        if ($datos->usuario_id != '' && $datos->auto_id != '' && $datos->fecha != '') {
-                            VentaRepository::update($datos);
-                            
+                        if ($datos['usuario_id'] != '' && $datos['auto_id'] != '' && $datos['fecha'] != '') {
+                            VentaRepository::update($datos); 
+                            header("Location:sistema.php");                        
                         } else {
                             $error = "Campo vacio";
                         }
                         break;
         case 'eliminar': 
                         VentaRepository::delete($datos);
-                        
+                        header("Location:sistema.php");
                         break;
         case 'salir': 
                             session_destroy();
@@ -312,7 +317,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     usuario_id : valores[0],
                     auto_id : valores[1],
                     fecha : valores[2],
-                }).then(() => window.location.reload())
+                }).then(()=> window.location.reload())
             }
         }
         //pedido ajax para la edicion de una venta
@@ -351,7 +356,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     usuario_id : valores[1],
                     auto_id : valores[2],
                     fecha : valores[3],
-                }).then(() => window.location.reload())
+                }).then(()=> window.location.reload())
             }
         }
         //pedido ajax para la eliminacion de una venta
@@ -365,9 +370,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             axios.post('sistema.php', {
                 evento: 'eliminar',
                 id: inputs[0].value,
-                }).then(() => window.location.reload())
-        
-        }
+                }).then(()=> window.location.reload())
+            }
         //pedido ajax para deslogearse
         document.querySelector('#form-salir').onsubmit = function(event)
         {
@@ -375,7 +379,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            
             axios.post('sistema.php', {
                     evento: 'salir',
-                }).then(() => window.location.href ="index.php")
+                }).then(()=> window.location.href="index.php")
             }
     </script>
 </body>
